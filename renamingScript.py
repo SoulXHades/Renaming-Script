@@ -1,5 +1,32 @@
 import os
 
+#return 0s to add to current filename's number to make sure end results of all filenames of the same length
+def additionOfZeros(currentFileNum, totalNumOfFiles):
+	#default is empty incase don't require adding of 0s
+	zeros = ""
+	sizeOfCurrentFileNum = sizeOfTotalFilesNum = 10
+
+	#to get the number of digits in the number that is going to be assigned to the current filename
+	currentFileNum //= 10
+
+	while currentFileNum != 0:
+		currentFileNum //= 10
+		sizeOfCurrentFileNum *= 10
+
+	#to get the number of digits in the number that is going to be assigned to the final filename (max number of digits setting as standard)
+	totalNumOfFiles //= 10
+	while totalNumOfFiles != 0:
+		totalNumOfFiles //= 10
+		sizeOfTotalFilesNum *= 10
+
+
+	#to obtain the number of digits off
+	zeros = str(sizeOfTotalFilesNum // sizeOfCurrentFileNum)
+
+	#remove the '1' from 10 or 100, etc
+	return zeros.strip("1")
+
+
 #fix filenames due to sorting order caused by lexicographic sorting
 def fixing(files):
 	#if error is True, error messages will not be cleared
@@ -62,13 +89,15 @@ def getLongestFileNameLen(files):
 def renaming(files):
 	#for file number
 	i = 1
+	#to use to know how many 0s to add to current file depend on num of files
+	totalNumOfFiles = len(files)
 
 	#prompt for new file name
 	newName = input("New name for your files: ")
 
 	try:
 		for file in files:
-			os.rename(path + file, path + newName + str(i) + file[-4:])
+			os.rename(path + file, path + newName + additionOfZeros(i, totalNumOfFiles) + str(i) + file[-4:])
 
 			i += 1
 	except Exception as e:
