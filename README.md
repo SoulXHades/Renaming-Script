@@ -15,4 +15,5 @@ You are allowed to use this script for free, distribute it or make it even bette
 If there are any questions, you can drop me a message in the issues section. Thank you!
 
 BTC: 1GP3YUHRW3xLPjyzhaN8pfaiXs95BdXfnf
+
 ETH : 0x3206e85f190b846098f6bcca28cebe6a0faa50ae
