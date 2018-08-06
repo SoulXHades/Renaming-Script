@@ -2,6 +2,7 @@ import os
 
 #fix filenames due to sorting order caused by lexicographic sorting
 def fixing(files):
+	#if error is True, error messages will not be cleared
 	error = False
 	maximum = getLongestFileNameLen(files)
 
@@ -90,6 +91,8 @@ while 1:
 
 	#get a list of files in lexicographic order
 	files = os.listdir(path)
+	#arrange files in ascending order
+	files.sort()
 
 	#show user the sequence of the items in the list
 	print(files)
