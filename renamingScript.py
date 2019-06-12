@@ -60,6 +60,16 @@ def fixing(files):
 			return
 
 
+#get list of sorted file names from that directory
+def getFiles(path):
+	#get a list of files in lexicographic order
+	files = os.listdir(path)
+	#arrange files in ascending order
+	files.sort()
+
+	return files
+
+
 #get the directory path
 def getFilePath():
 	#prompt for directory which contains all the files
@@ -86,24 +96,34 @@ def getLongestFileNameLen(files):
 
 
 #rename all the files with the same name and ascending number at the back
-def renaming(files):
+def renaming(files, newName):
 	#for file number
 	i = 1
 	#to use to know how many 0s to add to current file depend on num of files
 	totalNumOfFiles = len(files)
 
-	#prompt for new file name
-	newName = input("New name for your files: ")
-
 	try:
 		for file in files:
-			os.rename(path + file, path + newName + additionOfZeros(i, totalNumOfFiles) + str(i) + file[-4:])
+			filePathToWrite = path + newName + additionOfZeros(i, totalNumOfFiles) + str(i) + file[-4:];
+
+			#check if filename exist as the exception doesn't catch by Try Except
+			if os.path.exists(filePathToWrite):
+				#rename the remaining files in another name (one unicode largers) so no conflict
+				renaming(files[i-1:], newName[:-1] + chr(ord(newName[-1])+1))
+				#rename back the user wanted file name. Need getFiles() to get new list of new file names in the directory
+				renaming(getFiles(path), newName)
+				break
+			else:
+				os.rename(path + file, path + newName + additionOfZeros(i, totalNumOfFiles) + str(i) + file[-4:])
 
 			i += 1
 	except Exception as e:
 		print("Error: " + e)
+		return 0
 	else:
-		print("Renamed successfully!")
+		#have return value so that if recurence function call occurs, 
+		#won't have many print("Renamed successfully!") if put that in this function
+		return 1
 
 
 
@@ -118,10 +138,8 @@ while 1:
 		os.system('cls' if os.name == 'nt' else 'clear')
 		break
 
-	#get a list of files in lexicographic order
-	files = os.listdir(path)
-	#arrange files in ascending order
-	files.sort()
+	#get list of sorted file names from that directory
+	files = getFiles(path)
 
 	#show user the sequence of the items in the list
 	print(files)
@@ -142,7 +160,10 @@ while 1:
 
 		print("Please input numbers only.")
 	elif(int(ans) == 1):
-		renaming(files)
+		#prompt for new file name
+		newName = input("New name for your files: ")
+		if(renaming(files, newName)):
+			print("Renamed successfully!") 
 		path, quit = getFilePath()
 	elif(int(ans) == 2):
 		fixing(files)
