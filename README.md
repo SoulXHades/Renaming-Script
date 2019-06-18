@@ -16,6 +16,7 @@ You are allowed to use this script for free, distribute it or make it even bette
 - For CLI, access the CLI version folder and only Python 3 is needed.
 - For GUI, access the GUI version folder. You are required to download PyQt5 using *pip install PyQt5-stubs*
 - The main file for GUI version is renamingScriptGUI.py. Using python to run that file.
+- renamingscriptmainui.ui is the file I used to design the GUI in Qt Creator v4.9.1 before converting to .py file using pyuic5 through the command line.
 
 Example of the GUI page:
 
