@@ -18,7 +18,7 @@ You are allowed to use this script for free, distribute it or make it even bette
 - The main file for GUI version is renamingScriptGUI.py. Using python to run that file.
 
 Example of the GUI page:
-![alt text](https://raw.githubusercontent.com/SoulXHades/Renaming-Script/blob/master/GUI_example.png)
+![alt text](https://github.com/SoulXHades/Renaming-Script/blob/master/GUI_example.png)
 
 
 If there are any questions, you can drop me a message in the issues section. Thank you!
