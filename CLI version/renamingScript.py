@@ -118,7 +118,7 @@ def renaming(files, newName):
 
 			i += 1
 	except Exception as e:
-		print("Error: " + e)
+		print("Error: " + str(e))
 		return 0
 	else:
 		#have return value so that if recurence function call occurs, 

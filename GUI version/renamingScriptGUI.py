@@ -2,10 +2,13 @@
 # https://guiguide.readthedocs.io/en/latest/gui/qt.html#widgets
 # https://doc.qt.io/qt-5/qwidget.html#details
 # http://zetcode.com/gui/pyqt5/eventssignals/
+# https://www.tutorialspoint.com/pyqt/
 
 import sys
 from PyQt5 import QtCore, QtGui
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QPushButton, QRadioButton, QLineEdit, QFileDialog
+from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QPushButton, QRadioButton, QLineEdit, QFileDialog,\
+    QMessageBox
+from MainPageUIController import MainPageUIController
 
 
 # MainPage inherits QWidget class
@@ -13,6 +16,8 @@ class MainPageUI(QWidget):
     # constructor
     def __init__(self, title=""):
         super().__init__()
+        # initialize controller for this boundary
+        self.mainPageUICtrl = MainPageUIController()
 
         # self is the same as 'this' in other programming languages
         self.title = title
@@ -64,6 +69,7 @@ class MainPageUI(QWidget):
         self.clearBtn.setObjectName("clearBtn")
         self.okBtn = QPushButton(self)
         self.okBtn.setGeometry(QtCore.QRect(310, 250, 75, 23))
+        self.okBtn.clicked.connect(self.proceed)    # bind okBtn click event to proceed()
         self.okBtn.setObjectName("okBtn")
         self.label = QLabel(self)
         self.label.setGeometry(QtCore.QRect(40, 40, 71, 16))
@@ -76,6 +82,9 @@ class MainPageUI(QWidget):
         self.selFolderBtn.setGeometry(QtCore.QRect(300, 40, 75, 23))
         self.selFolderBtn.clicked.connect(self.selectingFolder)     # bind object's event handler to own method
         self.selFolderBtn.setObjectName("selFolderBtn")
+        self.resultPopup = QMessageBox()    # message popup to alert user of result after clicking ok button
+        self.resultPopup.setWindowTitle("Result")
+        self.resultPopup.setStandardButtons(QMessageBox.Ok)
 
         self.retranslateUi()
         self.clearAll()     # set content in main page to new default state
@@ -153,10 +162,29 @@ class MainPageUI(QWidget):
 
             self.okBtn.setDisabled(False)   # fix file names no need new name so Ok button is enabled
 
+    # called when Ok button is pressed
+    def proceed(self):
+        if self.renameRadio.isChecked():
+            # send to controller to rename files
+            if self.mainPageUICtrl.renaming(path=self.fileLoc, newName=self.newNameTB.text()):
+                self.resultPopup.setText("Successfully renamed the files.")
+            else:
+                self.resultPopup.setText("An error occur while renaming the files.")
+        else:
+            # send to controller to fix file names
+            if self.mainPageUICtrl.fixing(self.fileLoc):
+                self.resultPopup.setText("Successfully fixed the file names.")
+            else:
+                self.resultPopup.setText("An error occur while fixing the file names.")
+
+        # execute the popup result
+        self.resultPopup.exec_()
+
     # obtain the directory path of the folder which content to be renamed
     def selectingFolder(self):
         self.fileLoc = str(QFileDialog.getExistingDirectory(self, "Select Directory"))
         self.folderLocTB.setText(self.fileLoc)
+        self.fileLoc = self.fileLoc + "\\"
         self.enableFeatures()
 
 
