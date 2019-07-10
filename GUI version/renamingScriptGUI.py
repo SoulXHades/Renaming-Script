@@ -27,6 +27,7 @@ class MainPageUI(QWidget):
     def initWindow(self):
         self.setObjectName("mainWindow")
         self.resize(400, 300)
+        self.setFixedSize(self.size())  # to prevent main window from resizing
         self.renameRadio = QRadioButton(self)
         self.renameRadio.setGeometry(QtCore.QRect(30, 100, 171, 16))
         # only need one toggled event handler set as only 2 radio so it will still change in value
